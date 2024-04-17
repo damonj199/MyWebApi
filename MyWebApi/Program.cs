@@ -9,7 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddScoped<IOrderServices, OrderServices>();
 builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
-builder.Services.AddDbContext<HotDogsContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("HotDogs")));
+builder.Services.AddDbContext<HotDogsContext>(
+    options => options
+    .UseNpgsql(builder.Configuration
+    .GetConnectionString("HotDogs"))
+    .UseSnakeCaseNamingConvention());
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

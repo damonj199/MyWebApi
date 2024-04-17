@@ -3,12 +3,8 @@ using MyWebApi.Core.Dtos;
 
 namespace MyWebApi.DataLayer.Repositoris;
 
-public class HotDogsContext : DbContext
+public class HotDogsContext(DbContextOptions<HotDogsContext> options) : DbContext(options)
 {
-    public HotDogsContext(DbContextOptions<HotDogsContext> options) : base(options)
-    {        
-    }
-
     public DbSet<UserDto> Users { get; set; }
     public DbSet<OrdersDto> Orders { get; set; }
     public DbSet<ProductDto> Products { get; set; }
@@ -16,6 +12,14 @@ public class HotDogsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        modelBuilder
+            .Entity<UserDto>()
+            .HasMany(o => o.Orders)
+            .WithOne(u => u.User);
+
+        modelBuilder
+            .Entity<OrdersDto>()
+            .HasMany(o => o.Products)
+            .WithOne(p => p.Orders);
     }
 }

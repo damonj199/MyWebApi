@@ -2,16 +2,16 @@
 
 namespace MyWebApi.DataLayer.Repositoris;
 
-public class OrdersRepository : IOrdersRepository
+public class OrdersRepository : BaseRepository, IOrdersRepository
 {
-    public OrdersRepository()
+    public OrdersRepository(HotDogsContext context) : base(context)
     {
 
     }
 
     public List<OrdersDto> GetOrders()
     {
-        return new List<OrdersDto>();
+        return _ctx.Orders.ToList();
     }
 
     public OrdersDto GetOrderById(Guid id)
