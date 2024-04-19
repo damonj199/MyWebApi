@@ -19,9 +19,9 @@ public class OrdersRepository : BaseRepository, IOrdersRepository
         return new()
         {
             Id = id,
-            Name = "Car",
-            TypeName = "Cabriolet",
-            Prace = 1200000
+            Name = "Кость",
+            TypeName = "Игрушка для собак",
+            Prace = 500
         };
     }
 }
