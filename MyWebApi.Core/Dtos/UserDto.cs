@@ -1,7 +1,10 @@
-﻿namespace MyWebApi.Core.Dtos;
+﻿using Npgsql.EntityFrameworkCore.PostgreSQL.Query.Expressions.Internal;
+
+namespace MyWebApi.Core.Dtos;
 
 public class UserDto: IdContainer
 {
+
     public string UserName { get; set; } = string.Empty;
 
     public string Password { get; set; } = string.Empty;
