@@ -15,14 +15,14 @@ public class OrdersController : Controller
     }
 
     [HttpGet("/api/oredrs")]
-    public List<OrdersDto> GetOrser()
+    public ActionResult<List<OrdersDto>> GetOrser()
     {
-        return _orderServices.GetOrders();
+        return Ok(_orderServices.GetOrders());
     }
 
     [HttpGet("/api/oredrById/")]
-    public OrdersDto GetOrderById(Guid guid)
+    public ActionResult<OrdersDto> GetOrderById(Guid guid)
     {
-        return _orderServices.GetOrderById(Guid.NewGuid());
+        return Ok(_orderServices.GetOrderById(Guid.NewGuid()));
     }
 }

@@ -15,14 +15,14 @@ public class UsersController : Controller
     }
 
     [HttpGet("/api/getAllUsers")]
-    public List<UserDto> GetAllUsers()
+    public ActionResult<List<UserDto>> GetAllUsers()
     {
-        return _userServices.GetUsers();
+        return Ok(_userServices.GetUsers());
     }
 
     [HttpGet("/api/userById")]
-    public UserDto GetUserById(Guid guid)
+    public ActionResult<UserDto> GetUserById(Guid guid)
     {
-        return _userServices.GetUserById(guid);
+        return Ok(_userServices.GetUserById(guid));
     }
 }
