@@ -6,4 +6,5 @@ public interface IOrderServices
 {
     OrdersDto GetOrderById(Guid id);
     List<OrdersDto> GetOrders();
+    void DeleteOrderyId(Guid id);
 }

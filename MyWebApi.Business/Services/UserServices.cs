@@ -11,15 +11,10 @@ public class UserServices : IUserServices
     public UserServices(IUsersRepository usersRepository)
     {
         _usersRepository = usersRepository;
-    }
+    }0
 
-    public List<UserDto> GetUsers()
-    {
-        return _usersRepository.GetUser();
-    }
+    public List<UserDto> GetUsers() => _usersRepository.GetUser();
 
-    public UserDto GetUserById(Guid id)
-    {
-        return _usersRepository.GetUserById(id);
-    }
+    public UserDto GetUserById(Guid id) => _usersRepository.GetUserById(id);
+
 }

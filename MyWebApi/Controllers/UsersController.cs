@@ -14,7 +14,7 @@ public class UsersController : Controller
         _userServices = userServices;
     }
 
-    [HttpGet("/api/getAllUsers")]
+    [HttpGet("/api/allUsers")]
     public ActionResult<List<UserDto>> GetAllUsers()
     {
         return Ok(_userServices.GetUsers());
@@ -24,5 +24,17 @@ public class UsersController : Controller
     public ActionResult<UserDto> GetUserById(Guid guid)
     {
         return Ok(_userServices.GetUserById(guid));
+    }
+
+    [HttpPut("{id}")]
+    public ActionResult<UserDto> UpdatetUserById([FromRoute] Guid? guid, [FromBody] object request)
+    {
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteUserById(Guid guid)
+    {
+        return NoContent();
     }
 }

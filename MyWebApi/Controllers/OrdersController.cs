@@ -21,8 +21,24 @@ public class OrdersController : Controller
     }
 
     [HttpGet("/api/oredrById/")]
-    public ActionResult<OrdersDto> GetOrderById(Guid guid)
+    public ActionResult<OrdersDto> GetOrderById(Guid id)
     {
+        if (id == Guid.Empty)
+            return NotFound($"Заказа с id {id} не существует!");
+
         return Ok(_orderServices.GetOrderById(Guid.NewGuid()));
+    }
+
+    [HttpPost]
+    public ActionResult<Guid> CreateOrder(object order)
+    {
+        return Guid.NewGuid();
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteOrderById(Guid guid)
+    {
+        _orderServices.DeleteOrderyId(guid);
+        return NoContent();
     }
 }

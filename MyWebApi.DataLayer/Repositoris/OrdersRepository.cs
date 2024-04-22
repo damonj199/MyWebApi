@@ -14,14 +14,10 @@ public class OrdersRepository : BaseRepository, IOrdersRepository
         return _ctx.Orders.ToList();
     }
 
-    public OrdersDto GetOrderById(Guid id)
-    {
-        return new()
-        {
-            Id = id,
-            Name = "Кость",
-            TypeName = "Игрушка для собак",
-            Prace = 500
-        };
-    }
+    public OrdersDto GetOrderById(Guid id) => _ctx.Orders.FirstOrDefault(x => x.Id == id);
+
+    //public OrdersDto DeleteOrderById(Guid id)
+    //{
+    //    return _ctx.Orders.Remove();
+    //}
 }

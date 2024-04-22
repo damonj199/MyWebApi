@@ -1,28 +1,14 @@
-using Microsoft.EntityFrameworkCore;
-using MyWebApi.Business.IServices;
-using MyWebApi.Business.Services;
+using MyWebApi.Api.Extensions;
+using MyWebApi.Business;
 using MyWebApi.DataLayer;
-using MyWebApi.DataLayer.IRepository;
-using MyWebApi.DataLayer.Repositoris;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllers();
-builder.Services.AddScoped<IOrderServices, OrderServices>();
-builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
-builder.Services.AddScoped<IUserServices, UserServices>();
-builder.Services.AddScoped<IUsersRepository, UsersRepository>();
-builder.Services.AddDbContext<HotDogsContext>(
-    options => options
-    .UseNpgsql(builder.Configuration
-    .GetConnectionString("HotDogs"))
-    .UseSnakeCaseNamingConvention());
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.ConfigureApiServices();
+builder.Services.ConfigureBllServices();
+builder.Services.ConfigureDalServices();
+builder.Services.ConfigureDataBase(builder.Configuration);
 
 var app = builder.Build();
 
