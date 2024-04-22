@@ -1,5 +1,6 @@
-﻿using MyWebApi.Core.Dtos;
-using MyWebApi.DataLayer.Repositoris;
+﻿using MyWebApi.Business.IServices;
+using MyWebApi.Core.Dtos;
+using MyWebApi.DataLayer.IRepository;
 
 namespace MyWebApi.Business.Services;
 
@@ -12,13 +13,7 @@ public class OrderServices : IOrderServices
         _ordersRepository = ordersRepository;
     }
 
-    public List<OrdersDto> GetOrders()
-    {
-        return _ordersRepository.GetOrders();
-    }
+    public List<OrdersDto> GetOrders() => _ordersRepository.GetOrders();
 
-    public OrdersDto GetOrderById(Guid id)
-    {
-        return _ordersRepository.GetOrderById(id);
-    }
+    public OrdersDto GetOrderById(Guid id) => _ordersRepository.GetOrderById(id);
 }

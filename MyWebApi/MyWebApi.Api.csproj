@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MyWebApi.Business\MyWebApi.Business.csproj" />
     <ProjectReference Include="..\MyWebApi.Core\MyWebApi.Core.csproj" />
+    <ProjectReference Include="..\MyWebApi.DataLayer\MyWebApi.DataLayer.csproj" />
   </ItemGroup>
 
 </Project>

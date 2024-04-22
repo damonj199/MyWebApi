@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyWebApi.Business.Services;
+using MyWebApi.Business.IServices;
 using MyWebApi.Core.Dtos;
 
 namespace MyWebApi.Controllers;
@@ -14,21 +14,15 @@ public class OrdersController : Controller
         _orderServices = orderServices;
     }
 
-    [HttpGet("Oredr1")]
+    [HttpGet("/api/oredrs")]
     public List<OrdersDto> GetOrser()
     {
         return _orderServices.GetOrders();
     }
 
-    [HttpGet("OredrById")]
+    [HttpGet("/api/oredrById/")]
     public OrdersDto GetOrderById(Guid guid)
     {
         return _orderServices.GetOrderById(Guid.NewGuid());
-    }
-
-    [HttpGet("Test")]
-    public int[] GetTest()
-    {
-        return [1, 2, 3, 4];
     }
 }

@@ -1,5 +1,5 @@
 ﻿using MyWebApi.Core.Dtos;
-namespace MyWebApi.DataLayer.Repositoris
+namespace MyWebApi.DataLayer.IRepository
 {
     public interface IUsersRepository
     {

@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using MyWebApi.Business.IServices;
 using MyWebApi.Business.Services;
+using MyWebApi.DataLayer;
+using MyWebApi.DataLayer.IRepository;
 using MyWebApi.DataLayer.Repositoris;
 
 var builder = WebApplication.CreateBuilder(args);

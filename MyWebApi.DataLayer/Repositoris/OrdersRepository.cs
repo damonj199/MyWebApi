@@ -1,4 +1,5 @@
 ﻿using MyWebApi.Core.Dtos;
+using MyWebApi.DataLayer.IRepository;
 
 namespace MyWebApi.DataLayer.Repositoris;
 
@@ -6,7 +7,6 @@ public class OrdersRepository : BaseRepository, IOrdersRepository
 {
     public OrdersRepository(HotDogsContext context) : base(context)
     {
-
     }
 
     public List<OrdersDto> GetOrders()

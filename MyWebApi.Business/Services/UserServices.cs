@@ -1,5 +1,6 @@
-﻿using MyWebApi.Core.Dtos;
-using MyWebApi.DataLayer.Repositoris;
+﻿using MyWebApi.Business.IServices;
+using MyWebApi.Core.Dtos;
+using MyWebApi.DataLayer.IRepository;
 
 namespace MyWebApi.Business.Services;
 

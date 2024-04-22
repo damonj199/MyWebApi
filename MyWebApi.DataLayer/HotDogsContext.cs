@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyWebApi.Core.Dtos;
 
-namespace MyWebApi.DataLayer.Repositoris;
+namespace MyWebApi.DataLayer;
 
 public class HotDogsContext(DbContextOptions<HotDogsContext> options) : DbContext(options)
 {

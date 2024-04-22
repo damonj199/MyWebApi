@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyWebApi.Business.Services;
+using MyWebApi.Business.IServices;
 using MyWebApi.Core.Dtos;
 
 namespace MyWebApi.Controllers;
@@ -14,21 +14,15 @@ public class UsersController : Controller
         _userServices = userServices;
     }
 
-    [HttpGet("GetAllUsers")]
+    [HttpGet("/api/getAllUsers")]
     public List<UserDto> GetAllUsers()
     {
         return _userServices.GetUsers();
     }
 
-    [HttpGet("UserById")]
+    [HttpGet("/api/userById")]
     public UserDto GetUserById(Guid guid)
     {
         return _userServices.GetUserById(guid);
-    }
-
-    [HttpGet("Test")]
-    public int[] GetTest()
-    {
-        return [1, 2, 3, 4];
     }
 }

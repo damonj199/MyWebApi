@@ -1,8 +1,8 @@
 ﻿using MyWebApi.Core.Dtos;
 
-namespace MyWebApi.Business.Services;
+namespace MyWebApi.DataLayer.IRepository;
 
-public interface IOrderServices
+public interface IOrdersRepository
 {
     OrdersDto GetOrderById(Guid id);
     List<OrdersDto> GetOrders();
