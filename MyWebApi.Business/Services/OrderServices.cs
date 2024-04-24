@@ -27,4 +27,9 @@ public class OrderServices : IOrderServices
         }
         //_ordersRepository.DeleteOrderById(order);
     }
+
+    public void CreateOrder(object order)
+    {
+        _ordersRepository.CreateOrder();
+    }
 }

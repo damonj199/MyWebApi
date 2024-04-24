@@ -18,6 +18,14 @@ public class OrdersRepository : BaseRepository, IOrdersRepository
 
     //public OrdersDto DeleteOrderById(Guid id)
     //{
-    //    return _ctx.Orders.Remove();
+    //    _ctx.Orders.Remove(id);
+    //    return _ctx.SaveChanges();
+        
     //}
+
+    public void CreateOrder()
+    {
+        _ctx.Add(new OrdersDto { });
+        _ctx.SaveChanges();
+    }
 }

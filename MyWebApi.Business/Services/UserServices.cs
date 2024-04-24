@@ -11,7 +11,7 @@ public class UserServices : IUserServices
     public UserServices(IUsersRepository usersRepository)
     {
         _usersRepository = usersRepository;
-    }0
+    }
 
     public List<UserDto> GetUsers() => _usersRepository.GetUser();
 

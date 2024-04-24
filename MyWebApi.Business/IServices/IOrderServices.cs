@@ -7,4 +7,5 @@ public interface IOrderServices
     OrdersDto GetOrderById(Guid id);
     List<OrdersDto> GetOrders();
     void DeleteOrderyId(Guid id);
+    void CreateOrder(object order);
 }

@@ -30,12 +30,13 @@ public class OrdersController : Controller
     }
 
     [HttpPost]
-    public ActionResult<Guid> CreateOrder(object order)
+    public ActionResult<OrdersDto> CreateOrder(object order)
     {
-        return Guid.NewGuid();
+        _orderServices.CreateOrder(order);
+        return Ok();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete]
     public IActionResult DeleteOrderById(Guid guid)
     {
         _orderServices.DeleteOrderyId(guid);
