@@ -1,12 +1,14 @@
 ﻿using MyWebApi.Business.IServices;
 using MyWebApi.Core.Dtos;
 using MyWebApi.DataLayer.IRepository;
+using Serilog;
 
 namespace MyWebApi.Business.Services;
 
 public class UserServices : IUserServices
 {
-    public readonly IUsersRepository _usersRepository;
+    private readonly IUsersRepository _usersRepository;
+    private readonly ILogger _logger = Log.ForContext<UserServices>();
 
     public UserServices(IUsersRepository usersRepository)
     {

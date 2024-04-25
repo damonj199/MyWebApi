@@ -1,10 +1,12 @@
 ﻿using MyWebApi.Core.Dtos;
 using MyWebApi.DataLayer.IRepository;
+using Serilog;
 
 namespace MyWebApi.DataLayer.Repositoris;
 
 public class OrdersRepository : BaseRepository, IOrdersRepository
 {
+    private readonly ILogger _logger = Log.ForContext<OrdersRepository>();
     public OrdersRepository(HotDogsContext context) : base(context)
     {
     }
@@ -23,7 +25,7 @@ public class OrdersRepository : BaseRepository, IOrdersRepository
 
     public OrderDto CreateOrder(Guid id, string name, string typename, int prece)
     {
-        var Order = new OrderDto
+        var order = new OrderDto
         {
             Id = id,
             Name = name,
@@ -31,9 +33,10 @@ public class OrdersRepository : BaseRepository, IOrdersRepository
             Prace = prece
         };
 
-        _ctx.Add(Order);
+        _logger.Information("Добавляем заказ в базу");
+        _ctx.Add(order);
         _ctx.SaveChanges();
-        return Order;
+        return order;
     }
 
     public OrderDto GetOrderById(Guid id)

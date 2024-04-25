@@ -1,10 +1,12 @@
 ﻿using MyWebApi.Core.Dtos;
 using MyWebApi.DataLayer.IRepository;
+using Serilog;
 
 namespace MyWebApi.DataLayer.Repositoris;
 
 public class UsersRepository : BaseRepository, IUsersRepository
 {
+    private readonly ILogger _logger = Log.ForContext<UsersRepository>();
     public UsersRepository(HotDogsContext context) : base(context)
     {
     }

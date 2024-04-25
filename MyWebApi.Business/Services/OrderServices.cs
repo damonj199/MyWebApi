@@ -1,13 +1,14 @@
 ﻿using MyWebApi.Business.IServices;
 using MyWebApi.Core.Dtos;
 using MyWebApi.DataLayer.IRepository;
+using Serilog;
 
 namespace MyWebApi.Business.Services;
 
 public class OrderServices : IOrderServices
 {
     private readonly IOrdersRepository _ordersRepository;
-
+    private readonly ILogger _logger = Log.ForContext<OrderServices>();
     public OrderServices(IOrdersRepository ordersRepository)
     {
         _ordersRepository = ordersRepository;
@@ -29,6 +30,7 @@ public class OrderServices : IOrderServices
 
     public OrderDto CreateOrder(OrderDto order)
     {
+        _logger.Information("Пытвемся создать заказ через репозиторий!");
         _ordersRepository.CreateOrder(Guid.NewGuid(), order.Name, order.TypeName, order.Prace);
         return order;
     }

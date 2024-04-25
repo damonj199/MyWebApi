@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyWebApi.Business.IServices;
 using MyWebApi.Core.Dtos;
+using Serilog;
 
 namespace MyWebApi.Controllers;
 
@@ -8,7 +9,9 @@ namespace MyWebApi.Controllers;
 [Route("User")]
 public class UsersController : Controller
 {
-    public readonly IUserServices _userServices;
+    private readonly IUserServices _userServices;
+    private readonly Serilog.ILogger _logger = Log.ForContext<UsersController>();
+
     public UsersController(IUserServices userServices)
     {
         _userServices = userServices;
