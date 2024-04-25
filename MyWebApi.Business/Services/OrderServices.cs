@@ -1,7 +1,6 @@
 ﻿using MyWebApi.Business.IServices;
 using MyWebApi.Core.Dtos;
 using MyWebApi.DataLayer.IRepository;
-using MyWebApi.DataLayer.Repositoris;
 
 namespace MyWebApi.Business.Services;
 
@@ -14,9 +13,9 @@ public class OrderServices : IOrderServices
         _ordersRepository = ordersRepository;
     }
 
-    public List<OrdersDto> GetOrders() => _ordersRepository.GetOrders();
+    public List<OrderDto> GetOrders() => _ordersRepository.GetOrders();
 
-    public OrdersDto GetOrderById(Guid id) => _ordersRepository.GetOrderById(id);
+    public OrderDto GetOrderById(Guid id) => _ordersRepository.GetOrderById(id);
 
     public void DeleteOrderyId(Guid id)
     {
@@ -28,8 +27,9 @@ public class OrderServices : IOrderServices
         //_ordersRepository.DeleteOrderById(order);
     }
 
-    public void CreateOrder(object order)
+    public OrderDto CreateOrder(OrderDto order)
     {
-        _ordersRepository.CreateOrder();
+        _ordersRepository.CreateOrder(Guid.NewGuid(), order.Name, order.TypeName, order.Prace);
+        return order;
     }
 }

@@ -4,8 +4,8 @@ namespace MyWebApi.Business.IServices;
 
 public interface IOrderServices
 {
-    OrdersDto GetOrderById(Guid id);
-    List<OrdersDto> GetOrders();
+    OrderDto GetOrderById(Guid id);
+    List<OrderDto> GetOrders();
     void DeleteOrderyId(Guid id);
-    void CreateOrder(object order);
+    OrderDto CreateOrder(OrderDto order);
 }

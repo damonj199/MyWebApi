@@ -9,23 +9,35 @@ public class OrdersRepository : BaseRepository, IOrdersRepository
     {
     }
 
-    public List<OrdersDto> GetOrders()
+    public List<OrderDto> GetOrders()
     {
         return _ctx.Orders.ToList();
     }
 
-    public OrdersDto GetOrderById(Guid id) => _ctx.Orders.FirstOrDefault(x => x.Id == id);
-
-    //public OrdersDto DeleteOrderById(Guid id)
+    //public void DeleteOrderById(Guid id)
     //{
     //    _ctx.Orders.Remove(id);
-    //    return _ctx.SaveChanges();
-        
+    //    _ctx.SaveChanges();
+
     //}
 
-    public void CreateOrder()
+    public OrderDto CreateOrder(Guid id, string name, string typename, int prece)
     {
-        _ctx.Add(new OrdersDto { });
+        var Order = new OrderDto
+        {
+            Id = id,
+            Name = name,
+            TypeName = typename,
+            Prace = prece
+        };
+
+        _ctx.Add(Order);
         _ctx.SaveChanges();
+        return Order;
+    }
+
+    public OrderDto GetOrderById(Guid id)
+    {
+        throw new NotImplementedException();
     }
 }

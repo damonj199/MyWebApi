@@ -6,7 +6,7 @@ namespace MyWebApi.DataLayer;
 public class HotDogsContext(DbContextOptions<HotDogsContext> options) : DbContext(options)
 {
     public DbSet<UserDto> Users { get; set; }
-    public DbSet<OrdersDto> Orders { get; set; }
+    public DbSet<OrderDto> Orders { get; set; }
     public DbSet<ProductDto> Products { get; set; }
 
 
@@ -18,7 +18,7 @@ public class HotDogsContext(DbContextOptions<HotDogsContext> options) : DbContex
             .WithOne(u => u.User);
 
         modelBuilder
-            .Entity<OrdersDto>()
+            .Entity<OrderDto>()
             .HasMany(o => o.Products)
             .WithOne(p => p.Orders);
     }

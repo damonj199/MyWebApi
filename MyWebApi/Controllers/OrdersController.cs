@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyWebApi.Api.Models;
 using MyWebApi.Business.IServices;
 using MyWebApi.Core.Dtos;
 
@@ -15,13 +16,13 @@ public class OrdersController : Controller
     }
 
     [HttpGet("/api/oredrs")]
-    public ActionResult<List<OrdersDto>> GetOrser()
+    public ActionResult<List<OrderDto>> GetOrser()
     {
         return Ok(_orderServices.GetOrders());
     }
 
     [HttpGet("/api/oredrById/")]
-    public ActionResult<OrdersDto> GetOrderById(Guid id)
+    public ActionResult<OrderDto> GetOrderById(Guid id)
     {
         if (id == Guid.Empty)
             return NotFound($"Заказа с id {id} не существует!");
@@ -30,10 +31,15 @@ public class OrdersController : Controller
     }
 
     [HttpPost]
-    public ActionResult<OrdersDto> CreateOrder(object order)
+    public ActionResult<Guid> CreateOrder([FromBody] CreateOrderRequest request )
     {
-        _orderServices.CreateOrder(order);
-        return Ok();
+        var id = _orderServices.CreateOrder(new()
+        {
+            Name = request.Name,
+            TypeName = request.TypeName,
+            Prace = request.Prece
+        });
+        return Ok(id);
     }
 
     [HttpDelete]

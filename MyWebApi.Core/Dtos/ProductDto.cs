@@ -9,5 +9,5 @@ public class ProductDto : IdContainer
 
     public decimal Price { get; set; } = 0;
 
-    public OrdersDto? Orders { get; set; }
+    public OrderDto? Orders { get; set; }
 }

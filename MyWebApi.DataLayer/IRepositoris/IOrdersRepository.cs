@@ -4,7 +4,7 @@ namespace MyWebApi.DataLayer.IRepository;
 
 public interface IOrdersRepository
 {
-    void CreateOrder();
-    OrdersDto GetOrderById(Guid id);
-    List<OrdersDto> GetOrders();
+    OrderDto CreateOrder(Guid id, string name, string typename, int prece);
+    OrderDto GetOrderById(Guid id);
+    List<OrderDto> GetOrders();
 }

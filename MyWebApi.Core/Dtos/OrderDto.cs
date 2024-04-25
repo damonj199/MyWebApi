@@ -1,6 +1,6 @@
 ﻿namespace MyWebApi.Core.Dtos;
 
-public class OrdersDto: IdContainer
+public class OrderDto: IdContainer
 {
     public string Name { get; set; } = string.Empty;
 
@@ -10,6 +10,6 @@ public class OrdersDto: IdContainer
 
     public UserDto? User { get; set; }
 
-    public List<ProductDto> Products { get; set; } = [];
+    public List<ProductDto>? Products { get; set; } = [];
 
 }

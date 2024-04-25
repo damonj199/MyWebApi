@@ -13,6 +13,6 @@ public class UserDto: IdContainer
 
     public string Email { get; set; } = string.Empty;
 
-    public List<OrdersDto> Orders { get; set; } = [];
+    public List<OrderDto> Orders { get; set; } = [];
 
 }
