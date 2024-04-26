@@ -34,4 +34,10 @@ public class OrderServices : IOrderServices
         _ordersRepository.CreateOrder(Guid.NewGuid(), order.Name, order.TypeName, order.Prace);
         return order;
     }
+
+    public Guid UpdateOrder(OrderDto order)
+    {
+        order.Id = Guid.NewGuid();
+        return _ordersRepository.UpdateOrder(order);
+    }
 }

@@ -14,8 +14,8 @@ public class HotDogsContext(DbContextOptions<HotDogsContext> options) : DbContex
     {
         modelBuilder
             .Entity<UserDto>()
-            .HasMany(o => o.Orders)
-            .WithOne(u => u.User);
+            .HasMany(u => u.Orders)
+            .WithOne(o => o.User);
 
         modelBuilder
             .Entity<OrderDto>()

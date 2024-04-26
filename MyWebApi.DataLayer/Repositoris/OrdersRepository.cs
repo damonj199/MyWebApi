@@ -13,6 +13,7 @@ public class OrdersRepository : BaseRepository, IOrdersRepository
 
     public List<OrderDto> GetOrders()
     {
+        _logger.Information("Идем в базку за всеми заказами!");
         return _ctx.Orders.ToList();
     }
 
@@ -23,24 +24,32 @@ public class OrdersRepository : BaseRepository, IOrdersRepository
 
     //}
 
-    public OrderDto CreateOrder(Guid id, string name, string typename, int prece)
+    public OrderDto CreateOrder(Guid id, string name, string typename, int price)
     {
         var order = new OrderDto
         {
             Id = id,
             Name = name,
             TypeName = typename,
-            Prace = prece
+            Prace = price
         };
 
         _logger.Information("Добавляем заказ в базу");
+
         _ctx.Add(order);
         _ctx.SaveChanges();
+
         return order;
     }
 
-    public OrderDto GetOrderById(Guid id)
+    public Guid UpdateOrder(OrderDto order)
     {
-        throw new NotImplementedException();
+        _logger.Information("Идем в базу и обновляем данные по заказу");
+
+        _ctx.Orders.Update(order);
+        _ctx.SaveChanges();
+
+        return order.Id;
     }
+    public OrderDto GetOrderById(Guid id) => _ctx.Orders.FirstOrDefault(o => o.Id == id);
 }

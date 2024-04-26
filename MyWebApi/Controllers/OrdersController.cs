@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyWebApi.Api.Models.Request;
+using MyWebApi.Api.Models.Responses;
 using MyWebApi.Business.IServices;
 using MyWebApi.Core.Dtos;
 using Serilog;
@@ -7,7 +8,7 @@ using Serilog;
 namespace MyWebApi.Controllers;
 
 [ApiController]
-[Route("/api/o rder")]
+[Route("/api/order")]
 public class OrdersController : Controller
 {
     private readonly IOrderServices _orderServices;
@@ -17,35 +18,56 @@ public class OrdersController : Controller
         _orderServices = orderServices;
     }
 
-    [HttpGet("/api/oredrs")]
+    [HttpGet("oredrs")]
     public ActionResult<List<OrderDto>> GetOrser()
     {
         _logger.Information($"Получаем списов всех заказов");
         return Ok(_orderServices.GetOrders());
     }
 
-    [HttpGet("/api/oredrById/")]
+    [HttpGet("oredrById/")]
     public ActionResult<OrderDto> GetOrderById(Guid id)
     {
         if (id == Guid.Empty)
             return NotFound($"Заказа с id {id} не существует!");
 
         _logger.Information($"Получаем заказ по id {id}");
-        return Ok(_orderServices.GetOrderById(Guid.NewGuid()));
+
+        var order = _orderServices.GetOrderById(id);
+        OrderResponse response = new OrderResponse()
+        {
+            Id = order.Id,
+            Name = order.Name,
+            TypeName = order.TypeName,
+            Price = order.Prace
+        };
+        return Ok(response);
     }
 
     [HttpPost]
     public ActionResult<Guid> CreateOrder([FromBody] CreateOrderRequest request)
     {
-        _logger.Information($"{request.Name} {request.Prece}");
+        _logger.Information($"{request.Name} {request.Price}");
         var id = _orderServices.CreateOrder(new()
         {
             Name = request.Name,
             TypeName = request.TypeName,
-            Prace = request.Prece
+            Prace = request.Price
         });
         _logger.Information($"Сoздаем новый заказ");
         return Ok(id);
+    }
+
+    [HttpPut("{id}")]
+    public ActionResult<Guid> UpdateOrder(Guid id, string name, string typeName, int price)
+    {
+        _logger.Information("Для обновления дергаем сервис");
+        var order = _orderServices.GetOrderById(id);
+        name = order.Name;
+        typeName = order.TypeName;
+        price = order.Prace;
+
+        return Ok(_orderServices.UpdateOrder(order));
     }
 
     [HttpDelete]

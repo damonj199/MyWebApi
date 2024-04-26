@@ -8,4 +8,5 @@ public interface IOrderServices
     List<OrderDto> GetOrders();
     void DeleteOrderyId(Guid id);
     OrderDto CreateOrder(OrderDto order);
+    Guid UpdateOrder(OrderDto order);
 }
