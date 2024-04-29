@@ -1,12 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using MyWebApi.Api.Models.Request;
 using MyWebApi.Api.Models.Responses;
 using MyWebApi.Business.IServices;
 using MyWebApi.Core.Dtos;
 using Serilog;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace MyWebApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("/api/order")]
 public class OrdersController : Controller
@@ -23,6 +29,31 @@ public class OrdersController : Controller
     {
         _logger.Information($"Получаем списов всех заказов");
         return Ok(_orderServices.GetOrders());
+    }
+
+    [HttpPost("login")]
+    public ActionResult<AuthenticatedResponse> Login([FromBody] LoginOrderRequest order)
+    {
+        if (order is null)
+        {
+            return BadRequest("Invalid client request");
+        }
+        if (order.UserName == "johndoe" && order.Password == "def@123")
+        {
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("myWebApi_superSecretKey@345"));
+            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            var tokenOptions = new JwtSecurityToken(
+                issuer: "MyWebApi",
+                audience: "UI",
+                claims: new List<Claim>(),
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: signinCredentials
+            );
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            return Ok(new AuthenticatedResponse { Token = tokenString });
+        }
+        return Unauthorized();
     }
 
     [HttpGet("oredrById/")]

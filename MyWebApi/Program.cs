@@ -15,7 +15,7 @@ try
         .CreateBootstrapLogger();
 
     // Add services to the container.
-    builder.Services.ConfigureApiServices();
+    builder.Services.ConfigureApiServices(builder.Configuration);
     builder.Services.ConfigureBllServices();
     builder.Services.ConfigureDalServices();
     builder.Services.ConfigureDataBase(builder.Configuration);
@@ -36,6 +36,7 @@ try
     app.UseHttpsRedirection();
     app.UseSerilogRequestLogging();
 
+    app.UseAuthentication();
     app.UseAuthorization();
 
     app.MapControllers();
