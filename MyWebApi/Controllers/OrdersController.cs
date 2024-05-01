@@ -12,9 +12,9 @@ using System.Text;
 
 namespace MyWebApi.Controllers;
 
-[Authorize]
+//[Authorize]
 [ApiController]
-[Route("/api/order")]
+[Route("/api/orders")]
 public class OrdersController : Controller
 {
     private readonly IOrderServices _orderServices;
@@ -24,8 +24,8 @@ public class OrdersController : Controller
         _orderServices = orderServices;
     }
 
-    [HttpGet("oredrs")]
-    public ActionResult<List<OrderDto>> GetOrser()
+    [HttpGet]
+    public ActionResult<List<OrderDto>> GetOrders()
     {
         _logger.Information($"Получаем списов всех заказов");
         return Ok(_orderServices.GetOrders());
@@ -70,7 +70,7 @@ public class OrdersController : Controller
             Id = order.Id,
             Name = order.Name,
             TypeName = order.TypeName,
-            Price = order.Prace
+            Price = order.Price
         };
         return Ok(response);
     }
@@ -83,7 +83,7 @@ public class OrdersController : Controller
         {
             Name = request.Name,
             TypeName = request.TypeName,
-            Prace = request.Price
+            Price = request.Price
         });
         _logger.Information($"Сoздаем новый заказ");
         return Ok(id);
@@ -94,14 +94,14 @@ public class OrdersController : Controller
     {
         _logger.Information("Для обновления дергаем сервис");
         var order = _orderServices.GetOrderById(id);
-        name = order.Name;
-        typeName = order.TypeName;
-        price = order.Prace;
+        order.Name = name;
+        order.TypeName = typeName;
+        order.Price = price;
 
         return Ok(_orderServices.UpdateOrder(order));
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public IActionResult DeleteOrderById(Guid id)
     {
         _logger.Information($"Удаляем заказ по id {id}");

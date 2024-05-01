@@ -6,7 +6,7 @@ public class OrderDto: IdContainer
 
     public string TypeName { get; set; } = string.Empty;
 
-    public int Prace { get; set; } = 0;
+    public int Price { get; set; } = 0;
 
     public UserDto? User { get; set; }
 

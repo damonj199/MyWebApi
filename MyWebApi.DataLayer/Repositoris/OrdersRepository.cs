@@ -31,7 +31,7 @@ public class OrdersRepository : BaseRepository, IOrdersRepository
             Id = id,
             Name = name,
             TypeName = typename,
-            Prace = price
+            Price = price
         };
 
         _logger.Information("Добавляем заказ в базу");
