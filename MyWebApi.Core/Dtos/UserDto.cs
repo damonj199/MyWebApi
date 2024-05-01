@@ -9,9 +9,9 @@ public class UserDto: IdContainer
 
     public string Password { get; set; } = string.Empty;
 
-    public int Age { get; set; } = 0;
-
     public string Email { get; set; } = string.Empty;
+
+    public int Age { get; set; } = 0;
 
     public List<OrderDto> Orders { get; set; } = [];
 

@@ -2,7 +2,7 @@
 
 public class CreateOrderRequest
 {
-    public string Name { get; set; }
-    public string TypeName { get; set; }
-    public int Price { get; set; }
+    public string UserName { get; set; }
+    public DateTime Data { get; set; }
+    public int Summa { get; set; }
 }

@@ -68,9 +68,9 @@ public class OrdersController : Controller
         OrderResponse response = new OrderResponse()
         {
             Id = order.Id,
-            Name = order.Name,
-            TypeName = order.TypeName,
-            Price = order.Price
+            UserName = order.UserName,
+            Data = order.Data,
+            Summa = order.Summa
         };
         return Ok(response);
     }
@@ -78,25 +78,25 @@ public class OrdersController : Controller
     [HttpPost]
     public ActionResult<Guid> CreateOrder([FromBody] CreateOrderRequest request)
     {
-        _logger.Information($"{request.Name} {request.Price}");
+        _logger.Information($"{request.UserName} {request.Summa}");
         var id = _orderServices.CreateOrder(new()
         {
-            Name = request.Name,
-            TypeName = request.TypeName,
-            Price = request.Price
+            UserName = request.UserName,
+            Data = request.Data,
+            Summa = request.Summa
         });
         _logger.Information($"Сoздаем новый заказ");
         return Ok(id);
     }
 
     [HttpPut("{id}")]
-    public ActionResult<Guid> UpdateOrder(Guid id, string name, string typeName, int price)
+    public ActionResult<Guid> UpdateOrder(Guid id, string name, DateTime data, int price)
     {
         _logger.Information("Для обновления дергаем сервис");
         var order = _orderServices.GetOrderById(id);
-        order.Name = name;
-        order.TypeName = typeName;
-        order.Price = price;
+        order.UserName = name;
+        order.Data = data;
+        order.Summa = price;
 
         return Ok(_orderServices.UpdateOrder(order));
     }

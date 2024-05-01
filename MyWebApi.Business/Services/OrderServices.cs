@@ -31,7 +31,7 @@ public class OrderServices : IOrderServices
     public OrderDto CreateOrder(OrderDto order)
     {
         _logger.Information("Пытвемся создать заказ через репозиторий!");
-        _ordersRepository.CreateOrder(Guid.NewGuid(), order.Name, order.TypeName, order.Price);
+        _ordersRepository.CreateOrder(Guid.NewGuid(), order.UserName, order.Data, order.Summa);
         return order;
     }
 
