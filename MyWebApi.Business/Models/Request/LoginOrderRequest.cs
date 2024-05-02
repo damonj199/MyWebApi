@@ -1,4 +1,4 @@
-﻿namespace MyWebApi.Api.Models.Request;
+﻿namespace MyWebApi.Business.Models.Request;
 
 public class LoginOrderRequest
 {

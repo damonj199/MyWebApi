@@ -1,4 +1,7 @@
-﻿using MyWebApi.Business.IServices;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
+using MyWebApi.Business.IServices;
+using MyWebApi.Business.Models.Request;
 using MyWebApi.Core.Dtos;
 using MyWebApi.DataLayer.IRepository;
 using Serilog;
@@ -9,9 +12,11 @@ public class OrderServices : IOrderServices
 {
     private readonly IOrdersRepository _ordersRepository;
     private readonly ILogger _logger = Log.ForContext<OrderServices>();
-    public OrderServices(IOrdersRepository ordersRepository)
+    private readonly IMapper _mapper;
+    public OrderServices(IOrdersRepository ordersRepository, IMapper mapper)
     {
         _ordersRepository = ordersRepository;
+        _mapper = mapper;
     }
 
     public List<OrderDto> GetOrders() => _ordersRepository.GetOrders();
@@ -28,16 +33,29 @@ public class OrderServices : IOrderServices
         //_ordersRepository.DeleteOrderById(order);
     }
 
-    public OrderDto CreateOrder(OrderDto order)
+    public Guid CreateOrder(CreateOrderRequest request)
     {
-        _logger.Information("Пытвемся создать заказ через репозиторий!");
-        _ordersRepository.CreateOrder(Guid.NewGuid(), order.UserName, order.Data, order.Summa);
-        return order;
+        _logger.Information($"Добавляем заказ - {request.UserName}, на сумму: {request.Summa}");
+
+        OrderDto order = _mapper.Map<OrderDto>(request);
+         
+        return _ordersRepository.CreateOrder(order);
     }
 
-    public Guid UpdateOrder(OrderDto order)
+    public Guid UpdateOrder(UpdateOrderRequest request)
     {
-        order.Id = Guid.NewGuid();
+        var order = _ordersRepository.GetOrderById(request.Id);
+        
+        if (order == null)
+        {
+            _logger.Information($"Заказ с id {request.Id} не найден!");
+            return Guid.Empty;
+        }
+
+        order.UserName = request.UserName;
+        order.Data = request.Date;
+        order.Summa = request.Summa;
+
         return _ordersRepository.UpdateOrder(order);
     }
 }

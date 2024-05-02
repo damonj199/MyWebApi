@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using MyWebApi.Api.Models.Request;
-using MyWebApi.Api.Models.Responses;
+using MyWebApi.Business.Models.Request;
+using MyWebApi.Business.Models.Responses;
 using MyWebApi.Business.IServices;
 using MyWebApi.Core.Dtos;
 using Serilog;
@@ -22,13 +22,6 @@ public class OrdersController : Controller
     public OrdersController(IOrderServices orderServices)
     {
         _orderServices = orderServices;
-    }
-
-    [HttpGet]
-    public ActionResult<List<OrderDto>> GetOrders()
-    {
-        _logger.Information($"Получаем списов всех заказов");
-        return Ok(_orderServices.GetOrders());
     }
 
     [HttpPost("login")]
@@ -56,8 +49,15 @@ public class OrdersController : Controller
         return Unauthorized();
     }
 
+    [HttpGet]
+    public ActionResult<List<OrderDto>> GetOrders()
+    {
+        _logger.Information($"Получаем списов всех заказов");
+        return Ok(_orderServices.GetOrders());
+    }
+
     [HttpGet("oredrById/")]
-    public ActionResult<OrderDto> GetOrderById(Guid id)
+    public ActionResult<Guid> GetOrderById(Guid id)
     {
         if (id == Guid.Empty)
             return NotFound($"Заказа с id {id} не существует!");
@@ -78,27 +78,16 @@ public class OrdersController : Controller
     [HttpPost]
     public ActionResult<Guid> CreateOrder([FromBody] CreateOrderRequest request)
     {
-        _logger.Information($"{request.UserName} {request.Summa}");
-        var id = _orderServices.CreateOrder(new()
-        {
-            UserName = request.UserName,
-            Data = request.Data,
-            Summa = request.Summa
-        });
-        _logger.Information($"Сoздаем новый заказ");
-        return Ok(id);
+        _logger.Information($"Идем в сервис валидировать данный и создавать заказ");
+        return Ok(_orderServices.CreateOrder(request));
     }
 
     [HttpPut("{id}")]
-    public ActionResult<Guid> UpdateOrder(Guid id, string name, DateTime data, int price)
+    public ActionResult<Guid> UpdateOrder([FromBody] UpdateOrderRequest request)
     {
         _logger.Information("Для обновления дергаем сервис");
-        var order = _orderServices.GetOrderById(id);
-        order.UserName = name;
-        order.Data = data;
-        order.Summa = price;
 
-        return Ok(_orderServices.UpdateOrder(order));
+        return Ok(_orderServices.UpdateOrder(request));
     }
 
     [HttpDelete("{id}")]

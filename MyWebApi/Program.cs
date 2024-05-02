@@ -1,6 +1,7 @@
 using MyFirstBackend.API.Configuration;
 using MyWebApi.Api.Extensions;
 using MyWebApi.Business;
+using MyWebApi.Business.Models;
 using MyWebApi.DataLayer;
 using Serilog;
 
@@ -19,6 +20,7 @@ try
     builder.Services.ConfigureBllServices();
     builder.Services.ConfigureDalServices();
     builder.Services.ConfigureDataBase(builder.Configuration);
+    builder.Services.AddAutoMapper(typeof(OrdersMappingProfile));
 
     builder.Host.UseSerilog();
 

@@ -1,4 +1,4 @@
-﻿namespace MyWebApi.Api.Models.Responses;
+﻿namespace MyWebApi.Business.Models.Responses;
 
 public class AuthenticatedResponse
 {

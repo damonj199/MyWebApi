@@ -24,22 +24,14 @@ public class OrdersRepository : BaseRepository, IOrdersRepository
 
     //}
 
-    public OrderDto CreateOrder(Guid id, string name, DateTime data, int price)
+    public Guid CreateOrder(OrderDto order)
     {
-        var order = new OrderDto
-        {
-            Id = id,
-            UserName = name,
-            Data = data,
-            Summa = price
-        };
-
         _logger.Information("Добавляем заказ в базу");
 
         _ctx.Add(order);
         _ctx.SaveChanges();
 
-        return order;
+        return order.Id;
     }
 
     public Guid UpdateOrder(OrderDto order)
