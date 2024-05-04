@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyWebApi.Business.IServices;
+using MyWebApi.Business.Models.Request;
 using MyWebApi.Core.Dtos;
 using Serilog;
 
 namespace MyWebApi.Controllers;
 
 [ApiController]
-[Route("User")]
+[Route("/api/user")]
 public class UsersController : Controller
 {
     private readonly IUserServices _userServices;
@@ -17,20 +18,28 @@ public class UsersController : Controller
         _userServices = userServices;
     }
 
-    [HttpGet("/api/allUsers")]
+    [HttpGet("/allUsers")]
     public ActionResult<List<UserDto>> GetAllUsers()
     {
+        _logger.Information("Делаем запрос спикска всей клиентов");
         return Ok(_userServices.GetUsers());
     }
 
-    [HttpGet("/api/userById")]
-    public ActionResult<UserDto> GetUserById(Guid guid)
+    [HttpGet("/userById/{id}")]
+    public ActionResult<Guid> GetUserById(Guid id)
     {
-        return Ok(_userServices.GetUserById(guid));
+        return Ok(_userServices.GetUserById(id));
+    }
+
+    [HttpPost]
+    public ActionResult<Guid> AddUser([FromBody] CreateUserRequest request)
+    {
+        _logger.Information("Дергаем метод сервиса по добавлению клиента");
+        return Ok(_userServices.AddUser(request));
     }
 
     [HttpPut("{id}")]
-    public ActionResult<UserDto> UpdatetUserById([FromRoute] Guid? guid, [FromBody] object request)
+    public ActionResult<UserDto> UpdatetUserById([FromBody] UpdateUserRequest request)
     {
         return NoContent();
     }
@@ -38,6 +47,7 @@ public class UsersController : Controller
     [HttpDelete("{id}")]
     public IActionResult DeleteUserById(Guid guid)
     {
+        _userServices.DeleteUserById(guid);
         return NoContent();
     }
 }

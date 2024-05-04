@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using MyWebApi.Business.IServices;
 using MyWebApi.Business.Models.Request;
+using MyWebApi.Business.Models.Responses;
 using MyWebApi.Core.Dtos;
 using MyWebApi.DataLayer.IRepository;
 using Serilog;
@@ -21,16 +22,32 @@ public class OrderServices : IOrderServices
 
     public List<OrderDto> GetOrders() => _ordersRepository.GetOrders();
 
-    public OrderDto GetOrderById(Guid id) => _ordersRepository.GetOrderById(id);
+    public OrderDto GetOrderById(Guid id)
+    {
+        if (id == Guid.Empty)
+            throw new FileNotFoundException($"Заказа с id {id} не существует!");
+
+        var order = _ordersRepository.GetOrderById(id);
+
+        OrderResponse response = new OrderResponse()
+        {
+            Id = order.Id,
+            UserName = order.UserName,
+            Data = order.Data,
+            Summa = order.Summa
+        };
+        return (order);
+    }
 
     public void DeleteOrderyId(Guid id)
     {
         var order = _ordersRepository.GetOrderById(id);
+
         if (order == null)
         {
-
+            throw new Exception("Oшибка удаления заказа");
         }
-        //_ordersRepository.DeleteOrderById(order);
+        _ordersRepository.DeleteOrderById(order);
     }
 
     public Guid CreateOrder(CreateOrderRequest request)

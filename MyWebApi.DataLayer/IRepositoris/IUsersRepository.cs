@@ -3,8 +3,9 @@ namespace MyWebApi.DataLayer.IRepository
 {
     public interface IUsersRepository
     {
-        List<UserDto> GetUser();
+        List<UserDto> GetUsers();
         UserDto GetUserById(Guid id);
-        //UserDto DeleteUserById(Guid id);
+        Guid AddUser(UserDto user);
+        void DeleteUserById(UserDto user);
     }
 }

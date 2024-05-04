@@ -17,12 +17,13 @@ public class OrdersRepository : BaseRepository, IOrdersRepository
         return _ctx.Orders.ToList();
     }
 
-    //public void DeleteOrderById(Guid id)
-    //{
-    //    _ctx.Orders.Remove(id);
-    //    _ctx.SaveChanges();
+    public void DeleteOrderById(OrderDto order)
+    {
+        _ctx.Orders.Remove(order);
+        _ctx.SaveChanges();
 
-    //}
+        _logger.Information($"Заказ с id {order.Id} удален!");
+    }
 
     public Guid CreateOrder(OrderDto order)
     {

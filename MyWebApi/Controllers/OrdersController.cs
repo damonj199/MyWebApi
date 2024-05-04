@@ -31,7 +31,7 @@ public class OrdersController : Controller
         {
             return BadRequest("Invalid client request");
         }
-        if (order.UserName == "johndoe" && order.Password == "def@123")
+        if (order.UserName == "qwe123" && order.Password == "123qwe")
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("myWebApi_superSecretKey@345"));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
@@ -56,23 +56,11 @@ public class OrdersController : Controller
         return Ok(_orderServices.GetOrders());
     }
 
-    [HttpGet("oredrById/")]
-    public ActionResult<Guid> GetOrderById(Guid id)
+    [HttpGet("oredrById/{id}")]
+    public ActionResult<OrderResponse> GetOrderById(Guid id)
     {
-        if (id == Guid.Empty)
-            return NotFound($"Заказа с id {id} не существует!");
-
         _logger.Information($"Получаем заказ по id {id}");
-
-        var order = _orderServices.GetOrderById(id);
-        OrderResponse response = new OrderResponse()
-        {
-            Id = order.Id,
-            UserName = order.UserName,
-            Data = order.Data,
-            Summa = order.Summa
-        };
-        return Ok(response);
+        return Ok(_orderServices.GetOrderById(id));
     }
 
     [HttpPost]
