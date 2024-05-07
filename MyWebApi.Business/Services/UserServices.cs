@@ -4,6 +4,7 @@ using MyWebApi.Business.Models.Request;
 using MyWebApi.Core.Dtos;
 using MyWebApi.DataLayer.IRepository;
 using Serilog;
+using MyWebApi.Core.Exceptions;
 
 namespace MyWebApi.Business.Services;
 
@@ -31,6 +32,11 @@ public class UserServices : IUserServices
 
     public Guid AddUser(CreateUserRequest request)
     {
+        _logger.Information("Проверяем введенный возраст клиента");
+        if(request.Age < 16 || request.Age > 100)
+        {
+            throw new ValidationException("Возраст указан не верно");
+        }
         _logger.Information($"Добавляем клиента по имени {request.UserName}");
 
         UserDto user = _mapper.Map<UserDto>(request);

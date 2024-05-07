@@ -1,4 +1,5 @@
-﻿using MyWebApi.Core.Dtos;
+﻿using Microsoft.EntityFrameworkCore;
+using MyWebApi.Core.Dtos;
 using MyWebApi.DataLayer.IRepository;
 using Serilog;
 
@@ -14,7 +15,7 @@ public class OrdersRepository : BaseRepository, IOrdersRepository
     public List<OrderDto> GetOrders()
     {
         _logger.Information("Идем в базку за всеми заказами!");
-        return _ctx.Orders.ToList();
+        return _ctx.Orders.Include(x => x.User).ToList();
     }
 
     public void DeleteOrderById(OrderDto order)
@@ -44,5 +45,8 @@ public class OrdersRepository : BaseRepository, IOrdersRepository
 
         return order.Id;
     }
-    public OrderDto GetOrderById(Guid id) => _ctx.Orders.FirstOrDefault(o => o.Id == id);
+    public OrderDto GetOrderById(Guid id)
+    {
+        return _ctx.Orders.Include(x => x.User).FirstOrDefault(o => o.Id == id);
+    }
 }

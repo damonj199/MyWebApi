@@ -25,7 +25,7 @@ public class OrdersController : Controller
     }
 
     [HttpPost("login")]
-    public ActionResult<AuthenticatedResponse> Login([FromBody] LoginOrderRequest order)
+    public ActionResult<AuthenticatedResponse> Login([FromBody] LoginUserRequest order)
     {
         if (order is null)
         {
