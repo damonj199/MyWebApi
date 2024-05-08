@@ -23,7 +23,6 @@ try
     builder.Services.AddAutoMapper(typeof(OrdersMappingProfile));
 
     builder.Host.UseSerilog();
-
     var app = builder.Build();
 
     app.UseMiddleware<ExceptionMiddleware>();

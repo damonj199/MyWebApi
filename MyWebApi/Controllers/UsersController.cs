@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using MyWebApi.Business.IServices;
 using MyWebApi.Business.Models.Request;
 using MyWebApi.Business.Models.Responses;
 using MyWebApi.Core.Dtos;
 using Serilog;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace MyWebApi.Controllers;
 
@@ -34,12 +30,6 @@ public class UsersController : Controller
     public ActionResult<Guid> GetUserById(Guid id)
     {
         return Ok(_userServices.GetUserById(id));
-    }
-
-    [HttpGet("/userByEmail")]
-    public string GetUserEmail(string email)
-    {
-
     }
 
     [HttpPost]

@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using MyWebApi.Business.IServices;
 using MyWebApi.Business.Models.Request;
+using MyWebApi.Business.Models.Responses;
 using MyWebApi.Core.Dtos;
+using MyWebApi.Core.Exceptions;
 using MyWebApi.DataLayer.IRepository;
 using Serilog;
-using MyWebApi.Core.Exceptions;
-using Microsoft.AspNetCore.Server.HttpSys;
-using MyWebApi.Business.Models.Responses;
 
 namespace MyWebApi.Business.Services;
 
@@ -16,12 +15,16 @@ public class UserServices : IUserServices
     private readonly ILogger _logger = Log.ForContext<UserServices>();
     private readonly IMapper _mapper;
     private readonly IPasswodrHasher _passwordHasher;
+    private readonly JwtToken _jwtToken;
+    private const string _pepper = "pepper";
+    private const int _iteration = 7;
 
-    public UserServices(IUsersRepository usersRepository, IMapper mapper, IPasswodrHasher passwodrHasher)
+    public UserServices(IUsersRepository usersRepository, IMapper mapper, IPasswodrHasher passwodrHasher, JwtToken jwtToken)
     {
         _usersRepository = usersRepository;
         _mapper = mapper;
         _passwordHasher = passwodrHasher;
+        _jwtToken = jwtToken;
     }
 
     public AuthenticatedResponse LoginUser(LoginUserRequest loginUser)
@@ -35,6 +38,16 @@ public class UserServices : IUserServices
             throw new Exception("проверьте введеный email");
         }
 
+        var result = _passwordHasher.Verify(loginUser.Password, user.PasswordHash);
+
+        if (result == false)
+        {
+            throw new Exception("Пароль не верный");
+        }
+
+        var token = _jwtToken.GenerateToken(user);
+
+        return new AuthenticatedResponse { Token = token};
     }
 
     public List<UserDto> GetUsers()
@@ -50,7 +63,7 @@ public class UserServices : IUserServices
     public Guid AddUser(CreateUserRequest request)
     {
         _logger.Information("Проверяем введенный возраст клиента");
-        if(request.Age < 16 || request.Age > 100)
+        if (request.Age < 16 || request.Age > 100)
         {
             throw new ValidationException("Возраст указан не верно");
         }
