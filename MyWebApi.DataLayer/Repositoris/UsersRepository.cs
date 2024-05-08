@@ -10,7 +10,6 @@ public class UsersRepository : BaseRepository, IUsersRepository
     public UsersRepository(HotDogsContext context) : base(context)
     {
     }
-
     public List<UserDto> GetUsers()
     {
         return _ctx.Users.ToList();
@@ -20,6 +19,13 @@ public class UsersRepository : BaseRepository, IUsersRepository
     {
         _logger.Information($"Идем в базу смотреть Клиента по id {id}");
         return _ctx.Users.FirstOrDefault(x => x.Id == id);
+    }
+
+    public UserDto GetUserEmail(string email)
+    {
+        _logger.Information($"Идем в базу смотреть Клиента по {email}");
+
+        return _ctx.Users.FirstOrDefault(x => x.Email == email);
     }
     public Guid AddUser(UserDto user)
     {

@@ -5,6 +5,7 @@ namespace MyWebApi.DataLayer.IRepository
     {
         List<UserDto> GetUsers();
         UserDto GetUserById(Guid id);
+        UserDto GetUserEmail(string email);
         Guid AddUser(UserDto user);
         void DeleteUserById(UserDto user);
     }

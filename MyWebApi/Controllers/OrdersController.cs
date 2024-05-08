@@ -24,31 +24,6 @@ public class OrdersController : Controller
         _orderServices = orderServices;
     }
 
-    [HttpPost("login")]
-    public ActionResult<AuthenticatedResponse> Login([FromBody] LoginUserRequest order)
-    {
-        if (order is null)
-        {
-            return BadRequest("Invalid client request");
-        }
-        if (order.UserName == "qwe123" && order.Password == "123qwe")
-        {
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("myWebApi_superSecretKey@345"));
-            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-            var tokenOptions = new JwtSecurityToken(
-                issuer: "MyWebApi",
-                audience: "UI",
-                claims: new List<Claim>(),
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: signinCredentials
-            );
-
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-            return Ok(new AuthenticatedResponse { Token = tokenString });
-        }
-        return Unauthorized();
-    }
-
     [HttpGet]
     public ActionResult<List<OrderDto>> GetOrders()
     {

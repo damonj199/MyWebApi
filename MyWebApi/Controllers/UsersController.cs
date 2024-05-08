@@ -1,8 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using MyWebApi.Business.IServices;
 using MyWebApi.Business.Models.Request;
+using MyWebApi.Business.Models.Responses;
 using MyWebApi.Core.Dtos;
 using Serilog;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace MyWebApi.Controllers;
 
@@ -31,6 +36,12 @@ public class UsersController : Controller
         return Ok(_userServices.GetUserById(id));
     }
 
+    [HttpGet("/userByEmail")]
+    public string GetUserEmail(string email)
+    {
+
+    }
+
     [HttpPost]
     public ActionResult<Guid> AddUser([FromBody] CreateUserRequest request)
     {
@@ -49,5 +60,13 @@ public class UsersController : Controller
     {
         _userServices.DeleteUserById(guid);
         return NoContent();
+    }
+
+    [HttpPost("login")]
+    public ActionResult<AuthenticatedResponse> Login([FromBody] LoginUserRequest loginUser)
+    {
+        var authenticated = _userServices.LoginUser(loginUser);
+
+        return Ok(authenticated);
     }
 }
