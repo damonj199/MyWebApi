@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.IdentityModel.Tokens;
 using MyWebApi.Business.IServices;
 using MyWebApi.Business.Models.Request;
 using MyWebApi.Business.Models.Responses;
@@ -6,6 +7,9 @@ using MyWebApi.Core.Dtos;
 using MyWebApi.Core.Exceptions;
 using MyWebApi.DataLayer.IRepository;
 using Serilog;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace MyWebApi.Business.Services;
 
@@ -14,17 +18,13 @@ public class UserServices : IUserServices
     private readonly IUsersRepository _usersRepository;
     private readonly ILogger _logger = Log.ForContext<UserServices>();
     private readonly IMapper _mapper;
-    private readonly IPasswodrHasher _passwordHasher;
-    private readonly JwtToken _jwtToken;
-    private const string _pepper = "pepper";
-    private const int _iteration = 7;
+    //private const string _pepper = "pepper";
+    //private const int _iteration = 7;
 
-    public UserServices(IUsersRepository usersRepository, IMapper mapper, IPasswodrHasher passwodrHasher, JwtToken jwtToken)
+    public UserServices(IUsersRepository usersRepository, IMapper mapper)
     {
         _usersRepository = usersRepository;
         _mapper = mapper;
-        _passwordHasher = passwodrHasher;
-        _jwtToken = jwtToken;
     }
 
     public AuthenticatedResponse LoginUser(LoginUserRequest loginUser)
@@ -38,16 +38,30 @@ public class UserServices : IUserServices
             throw new Exception("проверьте введеный email");
         }
 
-        var result = _passwordHasher.Verify(loginUser.Password, user.PasswordHash);
-
-        if (result == false)
+        _logger.Information($"Проверяем пароль на соотвествие {loginUser.Email}");
+        if (!PasswodrHasher.Verify(loginUser.Password, user.PasswordHash))
         {
-            throw new Exception("Пароль не верный");
+            throw new Exception("Не верные данные, попробуйте еще раз");
         }
 
-        var token = _jwtToken.GenerateToken(user);
+        Claim[] claims = [new("userId", user.Id.ToString())];
 
-        return new AuthenticatedResponse { Token = token};
+        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MyWebApiSecretKeyMyWebApiSecretKeyMyWebApiSecretKey"));
+
+        var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+        var tokenOptions = new JwtSecurityToken(
+            issuer: "ProjectMyWebApi",
+            audience: "UI",
+            claims: claims,
+            expires: DateTime.Now.AddDays(1),
+            signingCredentials: signinCredentials);
+
+        var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+
+        _logger.Information($"{user.UserName} получает токен.");
+
+        return new AuthenticatedResponse { Token = token };
     }
 
     public List<UserDto> GetUsers()
@@ -70,6 +84,7 @@ public class UserServices : IUserServices
         _logger.Information($"Добавляем клиента по имени {request.UserName}");
 
         UserDto user = _mapper.Map<UserDto>(request);
+        var hashedPassword = PasswodrHasher.Generete(request.Password);
 
         return _usersRepository.AddUser(user);
     }

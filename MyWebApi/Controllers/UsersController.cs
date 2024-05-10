@@ -20,10 +20,13 @@ public class UsersController : Controller
     }
 
     [HttpGet("/allUsers")]
-    public ActionResult<List<UserDto>> GetAllUsers()
+    public ActionResult<List<UserResponse>> GetAllUsers()
     {
         _logger.Information("Делаем запрос спикска всей клиентов");
-        return Ok(_userServices.GetUsers());
+
+        _userServices.GetUsers();
+
+        return Ok(new List<UserResponse>());
     }
 
     [HttpGet("/userById/{id}")]

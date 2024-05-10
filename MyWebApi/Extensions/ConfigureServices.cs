@@ -21,9 +21,9 @@ public static class ConfigureServices
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = "MyWebApi",
+                ValidIssuer = "ProjectMyWebApi",
                 ValidAudience = "UI",
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("myWebApi_superSecretKey@345"))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MyWebApiSecretKeyMyWebApiSecretKeyMyWebApiSecretKey"))
             };
         });
 

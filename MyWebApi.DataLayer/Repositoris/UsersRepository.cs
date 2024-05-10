@@ -25,7 +25,7 @@ public class UsersRepository : BaseRepository, IUsersRepository
     {
         _logger.Information($"Идем в базу смотреть Клиента по {email}");
 
-        return _ctx.Users.FirstOrDefault(x => x.Email == email);
+        return _ctx.Users.FirstOrDefault(u => u.Email == email);
     }
     public Guid AddUser(UserDto user)
     {

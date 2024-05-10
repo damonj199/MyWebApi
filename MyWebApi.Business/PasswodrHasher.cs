@@ -1,10 +1,10 @@
 ﻿namespace MyWebApi.Business;
 
-public class PasswodrHasher : IPasswodrHasher
+public static class PasswodrHasher
 {
-    public string Generete(string password) =>
+    public static string Generete(string password) =>
         BCrypt.Net.BCrypt.EnhancedHashPassword(password);
 
-    public bool Verify(string password, string hashedPassword) =>
+    public static bool Verify(string password, string hashedPassword) =>
         BCrypt.Net.BCrypt.EnhancedVerify(password, hashedPassword);
 }
