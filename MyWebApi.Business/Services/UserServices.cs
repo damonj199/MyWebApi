@@ -39,7 +39,7 @@ public class UserServices : IUserServices
         }
 
         _logger.Information($"Проверяем пароль на соотвествие {loginUser.Email}");
-        if (!PasswodrHasher.Verify(loginUser.Password, user.PasswordHash))
+        if (!PasswodrHasher.Verify(loginUser.Password, user.Password))
         {
             throw new Exception("Не верные данные, попробуйте еще раз");
         }
@@ -83,8 +83,10 @@ public class UserServices : IUserServices
         }
         _logger.Information($"Добавляем клиента по имени {request.UserName}");
 
-        UserDto user = _mapper.Map<UserDto>(request);
         var hashedPassword = PasswodrHasher.Generete(request.Password);
+        request.Password = hashedPassword;
+
+        UserDto user = _mapper.Map<UserDto>(request);
 
         return _usersRepository.AddUser(user);
     }
