@@ -1,4 +1,6 @@
-﻿namespace MyWebApi.Core.Dtos;
+﻿using Npgsql.EntityFrameworkCore.PostgreSQL.Query.Expressions.Internal;
+
+namespace MyWebApi.Core.Dtos;
 
 public class UserDto: IdContainer
 {
@@ -6,10 +8,10 @@ public class UserDto: IdContainer
 
     public string Password { get; set; } = string.Empty;
 
-    public int Age { get; set; } = 0;
-
     public string Email { get; set; } = string.Empty;
 
-    public List<OrdersDto> Orders { get; set; } = [];
+    public int Age { get; set; } = 0;
+
+    public List<OrderDto> Orders { get; set; } = [];
 
 }

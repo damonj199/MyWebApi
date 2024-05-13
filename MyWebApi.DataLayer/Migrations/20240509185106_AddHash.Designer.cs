@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MyWebApi.DataLayer.Repositoris;
+using MyWebApi.DataLayer;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyWebApi.DataLayer.Migrations
 {
     [DbContext(typeof(HotDogsContext))]
-    [Migration("20240417114201_Initiol")]
-    partial class Initiol
+    [Migration("20240509185106_AddHash")]
+    partial class AddHash
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,30 +25,29 @@ namespace MyWebApi.DataLayer.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("MyWebApi.Core.Dtos.OrdersDto", b =>
+            modelBuilder.Entity("MyWebApi.Core.Dtos.OrderDto", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("data");
 
-                    b.Property<int>("Prace")
+                    b.Property<int>("Summa")
                         .HasColumnType("integer")
-                        .HasColumnName("prace");
-
-                    b.Property<string>("TypeName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("type_name");
+                        .HasColumnName("summa");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("user_name");
 
                     b.HasKey("Id")
                         .HasName("pk_orders");
@@ -113,10 +112,15 @@ namespace MyWebApi.DataLayer.Migrations
                         .HasColumnType("text")
                         .HasColumnName("email");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("password");
+                        .HasColumnName("password_hash");
+
+                    b.Property<string>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("password_salt");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -129,7 +133,7 @@ namespace MyWebApi.DataLayer.Migrations
                     b.ToTable("users", (string)null);
                 });
 
-            modelBuilder.Entity("MyWebApi.Core.Dtos.OrdersDto", b =>
+            modelBuilder.Entity("MyWebApi.Core.Dtos.OrderDto", b =>
                 {
                     b.HasOne("MyWebApi.Core.Dtos.UserDto", "User")
                         .WithMany("Orders")
@@ -141,7 +145,7 @@ namespace MyWebApi.DataLayer.Migrations
 
             modelBuilder.Entity("MyWebApi.Core.Dtos.ProductDto", b =>
                 {
-                    b.HasOne("MyWebApi.Core.Dtos.OrdersDto", "Orders")
+                    b.HasOne("MyWebApi.Core.Dtos.OrderDto", "Orders")
                         .WithMany("Products")
                         .HasForeignKey("OrdersId")
                         .HasConstraintName("fk_products_orders_orders_id");
@@ -149,7 +153,7 @@ namespace MyWebApi.DataLayer.Migrations
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("MyWebApi.Core.Dtos.OrdersDto", b =>
+            modelBuilder.Entity("MyWebApi.Core.Dtos.OrderDto", b =>
                 {
                     b.Navigation("Products");
                 });

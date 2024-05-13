@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MyWebApi.DataLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class Initiol : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,8 +18,8 @@ namespace MyWebApi.DataLayer.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     user_name = table.Column<string>(type: "text", nullable: false),
                     password = table.Column<string>(type: "text", nullable: false),
-                    age = table.Column<int>(type: "integer", nullable: false),
-                    email = table.Column<string>(type: "text", nullable: false)
+                    email = table.Column<string>(type: "text", nullable: false),
+                    age = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,9 +31,9 @@ namespace MyWebApi.DataLayer.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    type_name = table.Column<string>(type: "text", nullable: false),
-                    prace = table.Column<int>(type: "integer", nullable: false),
+                    user_name = table.Column<string>(type: "text", nullable: false),
+                    data = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    summa = table.Column<int>(type: "integer", nullable: false),
                     user_id = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
@@ -53,8 +53,8 @@ namespace MyWebApi.DataLayer.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     product_name = table.Column<string>(type: "text", nullable: false),
                     product_type = table.Column<string>(type: "text", nullable: false),
-                    amount = table.Column<int>(type: "integer", nullable: false),
                     price = table.Column<decimal>(type: "numeric", nullable: false),
+                    amount = table.Column<int>(type: "integer", nullable: false),
                     orders_id = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>

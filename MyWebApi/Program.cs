@@ -1,37 +1,55 @@
-using Microsoft.EntityFrameworkCore;
-using MyWebApi.Business.Services;
-using MyWebApi.DataLayer.Repositoris;
+using MyFirstBackend.API.Configuration;
+using MyWebApi.Api.Extensions;
+using MyWebApi.Business;
+using MyWebApi.Business.Models;
+using MyWebApi.DataLayer;
+using Serilog;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-builder.Services.AddScoped<IOrderServices, OrderServices>();
-builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
-builder.Services.AddDbContext<HotDogsContext>(
-    options => options
-    .UseNpgsql(builder.Configuration
-    .GetConnectionString("HotDogs"))
-    .UseSnakeCaseNamingConvention());
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+
+    var builder = WebApplication.CreateBuilder(args);
+    builder.Logging.ClearProviders();
+
+    Log.Logger = new LoggerConfiguration()
+        .ReadFrom.Configuration(builder.Configuration)
+        .CreateBootstrapLogger();
+
+    // Add services to the container.
+    builder.Services.ConfigureApiServices(builder.Configuration);
+    builder.Services.ConfigureBllServices();
+    builder.Services.ConfigureDalServices();
+    builder.Services.ConfigureDataBase(builder.Configuration);
+    builder.Services.AddAutoMapper(typeof(OrdersMappingProfile));
+
+    builder.Host.UseSerilog();
+    var app = builder.Build();
+
+    app.UseMiddleware<ExceptionMiddleware>();
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseHttpsRedirection();
+    app.UseSerilogRequestLogging();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    Log.Information("Running app");
+    app.Run();
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+catch (Exception ex)
+{
+    Log.Fatal(ex.Message);
+}
+finally
+{
+    Log.CloseAndFlush();
+}
