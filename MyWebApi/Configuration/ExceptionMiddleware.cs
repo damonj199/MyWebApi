@@ -22,7 +22,7 @@ public class ExceptionMiddleware
         }
         catch (ValidationException ex)
         {
-            _logger.Error("Ошибка валидации: {message}", ex.Message);
+            _logger.Error($"Ошибка валидации: {ex.Message}");
             await HandleValidationExceptionAsync(httpContext, ex);
         }
         catch (Exception ex)

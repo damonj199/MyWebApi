@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyWebApi.Business.IServices;
 using MyWebApi.Business.Models.Request;
 using MyWebApi.Business.Models.Responses;
@@ -19,17 +20,16 @@ public class UsersController : Controller
         _userServices = userServices;
     }
 
-    [HttpGet("/allUsers")]
+    //[Authorize]
+    [HttpGet("allUsers")]
     public ActionResult<List<UserDto>> GetAllUsers()
     {
         _logger.Information("Делаем запрос спикска всей клиентов");
 
-        _userServices.GetUsers();
-
-        return Ok(new List<UserDto>());
+        return Ok(_userServices.GetUsers());
     }
 
-    [HttpGet("/userById/{id}")]
+    [HttpGet("userById/{id}")]
     public ActionResult<Guid> GetUserById(Guid id)
     {
         return Ok(_userServices.GetUserById(id));

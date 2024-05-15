@@ -1,13 +1,11 @@
 using MyFirstBackend.API.Configuration;
 using MyWebApi.Api.Extensions;
 using MyWebApi.Business;
-using MyWebApi.Business.Models;
 using MyWebApi.DataLayer;
 using Serilog;
 
 try
 {
-
     var builder = WebApplication.CreateBuilder(args);
     builder.Logging.ClearProviders();
 
@@ -16,11 +14,10 @@ try
         .CreateBootstrapLogger();
 
     // Add services to the container.
-    builder.Services.ConfigureApiServices(builder.Configuration);
+    builder.Services.ConfigureApiServices();
     builder.Services.ConfigureBllServices();
     builder.Services.ConfigureDalServices();
     builder.Services.ConfigureDataBase(builder.Configuration);
-    builder.Services.AddAutoMapper(typeof(OrdersMappingProfile));
 
     builder.Host.UseSerilog();
     var app = builder.Build();

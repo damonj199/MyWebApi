@@ -18,8 +18,6 @@ public class UserServices : IUserServices
     private readonly IUsersRepository _usersRepository;
     private readonly ILogger _logger = Log.ForContext<UserServices>();
     private readonly IMapper _mapper;
-    //private const string _pepper = "pepper";
-    //private const int _iteration = 7;
 
     public UserServices(IUsersRepository usersRepository, IMapper mapper)
     {
